@@ -1,0 +1,62 @@
+{
+  "name": "deepliif-predict",
+  "label": "DeepLIIF - test prediction",
+  "description": "This package provides IHC prediction using DeepLIIF algorithm.",
+  "author": "D3b-TIRU",
+  "maintainer": "D3b-TIRU <flywheel@d3b.center>",
+  "url": "https://github.com/nadeemlab/DeepLIIF/tree/main",
+  "source": "https://github.com/d3b-center/deepliif-predict", 
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "custom": {
+    "gear-builder": {
+      "category": "analysis",
+      "image": "chop.flywheel.io/deepliif-predict:0.0.0"
+    },
+    "flywheel": {
+      "suite": "DeepLIIF"
+    }
+  },
+  "inputs": {
+    "image": {
+      "base": "file",
+      "description": "Digital slide image",
+      "optional": false,
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    }
+  },
+  "config": {
+    "tile_size": {
+      "description": "Tile size (default: 512).",
+      "type": "integer",
+      "optional":true,
+      "default":512
+    },
+    "wsi": {
+      "description": "Whether WSI image or not (default: true).",
+      "type": "boolean",
+      "optional":true,
+      "default":true
+    },
+    "region_size": {
+      "description": "Region size for WSI files (default: 20000).",
+      "type": "integer",
+      "optional":true,
+      "default":20000
+    }
+  },
+  "environment":{
+    "HOME":"/root",
+    "HOSTNAME":"0b633f948575",
+    "MESA_GL_VERSION_OVERRIDE":"3.2",
+    "PATH":"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "QT_GRAPHICSSYSTEM":"native",
+    "QT_X11_NO_MITSHM":"1",
+    "SHLVL":"1",
+    "TERM":"xterm"
+  }
+}
