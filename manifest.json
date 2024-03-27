@@ -1,7 +1,7 @@
 {
   "name": "deepliif-predict",
-  "label": "DeepLIIF - test prediction",
-  "description": "This package provides IHC prediction using DeepLIIF algorithm.",
+  "label": "DeepLIIF - IHC prediction",
+  "description": "This package provides IHC prediction using the DeepLIIF algorithm.",
   "author": "D3b-TIRU",
   "maintainer": "D3b-TIRU <flywheel@d3b.center>",
   "url": "https://github.com/nadeemlab/DeepLIIF/tree/main",
@@ -21,31 +21,23 @@
     "image": {
       "base": "file",
       "description": "Digital slide image",
-      "optional": false,
-      "type": {
-        "enum": [
-          "nifti"
-        ]
-      }
+      "optional": false
     }
   },
   "config": {
     "tile_size": {
       "description": "Tile size (default: 512).",
       "type": "integer",
-      "optional":true,
       "default":512
     },
     "wsi": {
       "description": "Whether WSI image or not (default: true).",
       "type": "boolean",
-      "optional":true,
       "default":true
     },
     "region_size": {
       "description": "Region size for WSI files (default: 20000).",
       "type": "integer",
-      "optional":true,
       "default":20000
     }
   },
