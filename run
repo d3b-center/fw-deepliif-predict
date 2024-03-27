@@ -30,14 +30,12 @@ awk -F"[,:}]" '{for(i=1;i<=NF;i++){if($i~/'$KEY'\042/){print $(i+1)}}}' | tr -d 
 ## get all user configurations
 if [[ -f $CONFIG_FILE ]]; then # if there's a user config file, use it, otherwise use manifest defaults
   echo "$CONTAINER  $CONFIG_FILE found. Loading config..."
-  output_fn="$(cat $CONFIG_FILE | jsonValue output_file_name)"
   tile_size="$(cat $CONFIG_FILE | jsonValue tile_size)"
   region_size="$(cat $CONFIG_FILE | jsonValue region_size)"
   wsi="$(cat $CONFIG_FILE | jsonValue wsi)"
 
 else
   echo "$CONTAINER  $CONFIG_FILE not found. Loading defaults from $MANIFEST..."
-  output_fn="$(cat $MANIFEST | jsonValue output_file_name default)"
   tile_size="$(cat $MANIFEST | jsonValue tile_size default)"
   region_size="$(cat $MANIFEST | jsonValue region_size default)"
   wsi="$(cat $MANIFEST | jsonValue wsi default)"
@@ -45,7 +43,7 @@ else
 fi
 
 ## Find the input files
-im_file=$(find $im_DIR/* -maxdepth 0 -type f -name "*.nii*")
+im_file=$(find $im_DIR/* -maxdepth 0 -type f)
 
 # out_path="output/"
 # out_path+=$output_fn
@@ -54,16 +52,19 @@ im_file=$(find $im_DIR/* -maxdepth 0 -type f -name "*.nii*")
 ## If necessary input files are found, run the thing
 if [[ -f $im_file ]] ; then
 
-  if [[ ! -d "output" ]] ; then
-    mkdir output
+  if [[ ! -d $OUTPUT_DIR ]] ; then
+    mkdir $OUTPUT_DIR
   fi
 
-  if wsi ; then
+  if $wsi ; then
     echo "$CONTAINER  Running DeepLIIF inference (tile size: $tile_size; region size $region_size)"
-    deepliif test --input-dir $im_file --output-dir /output --tile-size ${tile_size} --region-size ${region_size} --model-dir DeepLIIF_Latest_Model
+    deepliif test --input-dir $im_DIR --output-dir $OUTPUT_DIR --tile-size ${tile_size} --region-size ${region_size} --model-dir DeepLIIF_Latest_Model
+    # restructure output files
+    mv $OUTPUT_DIR/*/* $OUTPUT_DIR/
+    rm -r $OUTPUT_DIR/${im_file}
   else
     echo "$CONTAINER  Running DeepLIIF inference (tile size: $tile_size)"
-    deepliif test --input-dir $im_file --output-dir /output --tile-size ${tile_size} --model-dir DeepLIIF_Latest_Model
+    deepliif test --input-dir $im_DIR --output-dir $OUTPUT_DIR --tile-size ${tile_size} --model-dir DeepLIIF_Latest_Model
   fi
 
 ################# Finish up #################
