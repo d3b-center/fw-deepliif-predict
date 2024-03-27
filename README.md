@@ -2,7 +2,8 @@
 
 Flywheel gear that implements [DeepLIIF](https://github.com/nadeemlab/DeepLIIF/tree/main) model inference for IHC images. See also https://deepliif.org/
 
-### Dependencies:
+### Dependencies
+
 - Python 3.8
 - DeepLIIF
 
@@ -22,7 +23,7 @@ Most recent model downloaded on March 26, 2024. Latest model can be downloaded f
 
 ### Other info
 
-Takes a few minutes to run on images around 4096 x 4096 pixels, for whole slide 19920 x 18706 (with 16 GB mem, 2GHz quad core). For best results, use an image with resolution of 10X or higher.
+Takes a ~10 minutes to run on images around 4096 x 4096 pixels, 2 hr 17 mins for whole slide 19920 x 18706 (with 16 GB mem, 2GHz quad core). For best results, use an image with resolution of 10X or higher.
 
 ### References
 
