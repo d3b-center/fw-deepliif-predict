@@ -33,12 +33,14 @@ if [[ -f $CONFIG_FILE ]]; then # if there's a user config file, use it, otherwis
   tile_size="$(cat $CONFIG_FILE | jsonValue tile_size)"
   region_size="$(cat $CONFIG_FILE | jsonValue region_size)"
   wsi="$(cat $CONFIG_FILE | jsonValue wsi)"
+  output_results_pickle="$(cat $CONFIG_FILE | jsonValue output_results_pickle)"
 
 else
   echo "$CONTAINER  $CONFIG_FILE not found. Loading defaults from $MANIFEST..."
   tile_size="$(cat $MANIFEST | jsonValue tile_size default)"
   region_size="$(cat $MANIFEST | jsonValue region_size default)"
   wsi="$(cat $MANIFEST | jsonValue wsi default)"
+  output_results_pickle="$(cat $MANIFEST | jsonValue output_results_pickle default)"
 
 fi
 
@@ -61,7 +63,9 @@ if [[ -f $im_file ]] ; then
     deepliif test --input-dir $im_DIR --output-dir $OUTPUT_DIR --tile-size ${tile_size} --region-size ${region_size} --model-dir DeepLIIF_Latest_Model
     # restructure output files
     mv $OUTPUT_DIR/*/* $OUTPUT_DIR/
-    rm -r $OUTPUT_DIR/${im_file}
+    if ! $output_results_pickle ; then
+      rm $OUTPUT_DIR/results.pickle
+    fi
   else
     echo "$CONTAINER  Running DeepLIIF inference (tile size: $tile_size)"
     deepliif test --input-dir $im_DIR --output-dir $OUTPUT_DIR --tile-size ${tile_size} --model-dir DeepLIIF_Latest_Model
