@@ -5,7 +5,7 @@
 #
 
 CONTAINER="[deepliif-predict]"
-echo -e "$CONTAINER  Initiated"
+echo -e "$(date -u) $CONTAINER  Initiated"
 
 ###############################################################################
 ## Built to flywheel-v0 spec.
@@ -29,14 +29,14 @@ awk -F"[,:}]" '{for(i=1;i<=NF;i++){if($i~/'$KEY'\042/){print $(i+1)}}}' | tr -d 
 
 ## get all user configurations
 if [[ -f $CONFIG_FILE ]]; then # if there's a user config file, use it, otherwise use manifest defaults
-  echo "$CONTAINER  $CONFIG_FILE found. Loading config..."
+  echo "$(date -u) $CONTAINER  $CONFIG_FILE found. Loading config..."
   tile_size="$(cat $CONFIG_FILE | jsonValue tile_size)"
   region_size="$(cat $CONFIG_FILE | jsonValue region_size)"
   wsi="$(cat $CONFIG_FILE | jsonValue wsi)"
   output_results_pickle="$(cat $CONFIG_FILE | jsonValue output_results_pickle)"
 
 else
-  echo "$CONTAINER  $CONFIG_FILE not found. Loading defaults from $MANIFEST..."
+  echo "$(date -u) $CONTAINER  $CONFIG_FILE not found. Loading defaults from $MANIFEST..."
   tile_size="$(cat $MANIFEST | jsonValue tile_size default)"
   region_size="$(cat $MANIFEST | jsonValue region_size default)"
   wsi="$(cat $MANIFEST | jsonValue wsi default)"
@@ -59,7 +59,7 @@ if [[ -f $im_file ]] ; then
   fi
 
   if $wsi ; then
-    echo "$CONTAINER  Running DeepLIIF inference (tile size: $tile_size; region size $region_size)"
+    echo "$(date -u) $CONTAINER  Running DeepLIIF inference (tile size: $tile_size; region size $region_size)"
     deepliif test --input-dir $im_DIR --output-dir $OUTPUT_DIR --tile-size ${tile_size} --region-size ${region_size} --model-dir DeepLIIF_Latest_Model
     # restructure output files
     mv $OUTPUT_DIR/*/* $OUTPUT_DIR/
@@ -67,24 +67,24 @@ if [[ -f $im_file ]] ; then
       rm $OUTPUT_DIR/results.pickle
     fi
   else
-    echo "$CONTAINER  Running DeepLIIF inference (tile size: $tile_size)"
+    echo "$(date -u) $CONTAINER  Running DeepLIIF inference (tile size: $tile_size)"
     deepliif test --input-dir $im_DIR --output-dir $OUTPUT_DIR --tile-size ${tile_size} --model-dir DeepLIIF_Latest_Model
   fi
 
 ################# Finish up #################
   STATUS=$?
 else
-  echo "$CONTAINER  Input files not found!"
+  echo "$(date -u) $CONTAINER  Input files not found!"
   exit 1
 fi
 
 # Check exit status
 if [[ $STATUS == 0 ]]
   then
-    echo -e "$CONTAINER  Done!"
+    echo -e "$(date -u) $CONTAINER  Done!"
 
   else
-    echo "$CONTAINER  command returned a non-zero exit code = [$STATUS]."
+    echo "$(date -u) $CONTAINER  command returned a non-zero exit code = [$STATUS]."
     exit 1
 fi
 
