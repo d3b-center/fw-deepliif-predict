@@ -1,5 +1,7 @@
 # DeepLIIF IHC prediction
 
+Current model (download & extract): https://drive.google.com/file/d/12zCZn42wSR1-VOdzAjjmv0zdhkTndSEy/view?usp=drive_link
+
 Flywheel gear that implements [DeepLIIF](https://github.com/nadeemlab/DeepLIIF/tree/main) model inference for IHC images. See also https://deepliif.org/
 
 ### Dependencies
